@@ -44,9 +44,8 @@ class WordItem extends React.Component {
     render() {
         const {item} = this.props;
         const {definition} = this.state;
-        return <li>
+        return <li onMouseOver={() => this.translate(item)} title="hover to show translation">
             {item} <div>{ definition }</div>
-            <button onClick={() => this.translate(item)}>translate</button>
         </li>
     }
 }

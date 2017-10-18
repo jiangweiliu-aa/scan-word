@@ -23,7 +23,10 @@ $(window).keypress(function(event) {
     return false;
 });
 
+const container = $('<div></div>')
+$('body').append(container)
+
 render(
     <WordWrapper items={items}/>,
-    $('body').children()[0]
+    container
 )
