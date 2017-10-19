@@ -3,15 +3,12 @@ import {render} from 'react-dom'
 import $ from 'jquery'
 import WordWrapper from './app'
 import scan from './scanWord'
-import batchSave from './api'
+import filterWords from './filterWords'
 
-const items = scan()
-
-// batchSave(items).then((data) => {
-//     console.log(1111111111111122222, data)
-// })
+const items = scan().filter(w => !filterWords.includes(w.toLowerCase()))
 
 $(window).keypress(function(event) {
+    console.log("scan word keypress:", event, event.which)
     if (!(event.which == 9 && event.ctrlKey)) return true;
     const wrapper = $('.word-list-wrapper');
     if (wrapper.hasClass('invisible')) {
@@ -28,5 +25,5 @@ $('body').append(container)
 
 render(
     <WordWrapper items={items}/>,
-    container
+    container[0]
 )

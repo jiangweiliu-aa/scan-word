@@ -1,15 +1,15 @@
 // @flow
 import React from 'react'
 import styled from 'styled-components'
-import {search} from './api'
+import {search, add} from './api'
 
 const WordListWrapper = styled.div.attrs({
-    className: 'word-list-wrapper'
+    className: 'word-list-wrapper invisible',
 })`
     position: fixed;
     background: pink;
-    width: 200px;
-    right: 0;
+    left: 20%;
+    right: 20%;
     top: 0;
     bottom: 0;
     padding: 10px; 
@@ -18,8 +18,18 @@ const WordListWrapper = styled.div.attrs({
     opacity: 0.8;
     
     &.invisible {
-        right: -220px;
+        display: none;
     }   
+`
+
+const AddBtn = styled.button`
+    padding: 10px;
+`
+
+const Translation = styled.div`
+    color: #c00;
+    min-height: 20px;
+    min-width: 1px;
 `
 
 const WordWrapper = props => <div>
@@ -29,8 +39,9 @@ const WordWrapper = props => <div>
 class WordItem extends React.Component {
     constructor() {
         super();
-        this.state = {definition: null};
+        this.state = {definition: null}
         this.translate = this.translate.bind(this)
+        this.addTranslation = this.addTranslation.bind(this)
     }
 
     translate(word) {
@@ -41,11 +52,23 @@ class WordItem extends React.Component {
         })
     }
 
+    addTranslation(word) {
+        const self = this;
+        add(word).then(result => {
+            console.log('added word', result)
+            self.setState({
+                added: true,
+            })
+        })
+    }
+
     render() {
         const {item} = this.props;
-        const {definition} = this.state;
-        return <li onMouseOver={() => this.translate(item)} title="hover to show translation">
-            {item} <div>{ definition }</div>
+        const {definition, added} = this.state;
+        const addBtn = added ? <span>(added to dictionary)</span> : <AddBtn onClick={() => this.addTranslation(item)}>add</AddBtn>
+        return <li title="hover to show translation">
+            <span onMouseOver={() => this.translate(item)}><b>{item}</b> {addBtn}</span>
+            <Translation>{ definition }</Translation>
         </li>
     }
 }
@@ -56,7 +79,7 @@ const AppList = props => {
     ))
     return <WordListWrapper>
         <h1>total: {props.items.length} words</h1>
-        <div>toggle shortcut: (<h5>ctrl+i</h5>)</div>
+        <div>toggle shortcut: (<b>ctrl+i</b>)</div>
         <ul>
             {childrens}
         </ul>

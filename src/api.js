@@ -10,7 +10,7 @@ const batchSave = words => {
 }
 
 const search = word => {
-    const searchUrl = `http://www.shanbay.com/api/word/${word}`
+    const searchUrl = `https://www.shanbay.com/api/word/${word}`
     return new Promise((resolve) => {
         chrome.runtime.sendMessage({
             event_name: 'ajax',
@@ -25,5 +25,21 @@ const search = word => {
     })
 }
 
+const add = word => {
+    const addUrl = `http://www.shanbay.com/api/learning/add/${word}`
+    return new Promise((resolve) => {
+        chrome.runtime.sendMessage({
+            event_name: 'ajax',
+            payload: {
+                url: addUrl,
+                method: 'GET',
+                dataType: 'json'
+            }
+        }, data => {
+            resolve(data)
+        })
+    })
+}
+
 export default batchSave
-export { search }
+export { search, add }
