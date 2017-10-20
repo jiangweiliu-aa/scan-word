@@ -9,7 +9,7 @@ const items = scan().filter(w => !filterWords.includes(w.toLowerCase()))
 
 $(window).keypress(function(event) {
     console.log("scan word keypress:", event, event.which)
-    if (!(event.which == 9 && event.ctrlKey)) return true;
+    if (!(event.which == 11 && event.ctrlKey)) return true;
     const wrapper = $('.word-list-wrapper');
     if (wrapper.hasClass('invisible')) {
         wrapper.removeClass('invisible');

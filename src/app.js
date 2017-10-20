@@ -79,7 +79,7 @@ const AppList = props => {
     ))
     return <WordListWrapper>
         <h1>total: {props.items.length} words</h1>
-        <div>toggle shortcut: (<b>ctrl+i</b>)</div>
+        <div>toggle shortcut: (<b>ctrl+k</b>)</div>
         <ul>
             {childrens}
         </ul>
