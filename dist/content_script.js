@@ -10847,19 +10847,7 @@ var _app = __webpack_require__(34);
 
 var _app2 = _interopRequireDefault(_app);
 
-var _scanWord = __webpack_require__(42);
-
-var _scanWord2 = _interopRequireDefault(_scanWord);
-
-var _filterWords = __webpack_require__(43);
-
-var _filterWords2 = _interopRequireDefault(_filterWords);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var items = (0, _scanWord2.default)().filter(function (w) {
-    return !_filterWords2.default.includes(w.toLowerCase());
-});
 
 (0, _jquery2.default)(window).keypress(function (event) {
     console.log("scan word keypress:", event, event.which);
@@ -10877,7 +10865,7 @@ var items = (0, _scanWord2.default)().filter(function (w) {
 var container = (0, _jquery2.default)('<div></div>');
 (0, _jquery2.default)('body').append(container);
 
-(0, _reactDom.render)(_react2.default.createElement(_app2.default, { items: items }), container[0]);
+(0, _reactDom.render)(_react2.default.createElement(_app2.default, null), container[0]);
 
 /***/ }),
 /* 18 */
@@ -19465,8 +19453,9 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _templateObject = _taggedTemplateLiteral(['\n    position: fixed;\n    background: pink;\n    left: 20%;\n    right: 20%;\n    top: 0;\n    bottom: 0;\n    padding: 10px; \n    z-index: 1000;\n    overflow-y: auto;\n    opacity: 0.8;\n    \n    &.invisible {\n        display: none;\n    }   \n'], ['\n    position: fixed;\n    background: pink;\n    left: 20%;\n    right: 20%;\n    top: 0;\n    bottom: 0;\n    padding: 10px; \n    z-index: 1000;\n    overflow-y: auto;\n    opacity: 0.8;\n    \n    &.invisible {\n        display: none;\n    }   \n']),
-    _templateObject2 = _taggedTemplateLiteral(['\n    padding: 10px;\n'], ['\n    padding: 10px;\n']),
-    _templateObject3 = _taggedTemplateLiteral(['\n    color: #c00;\n    min-height: 20px;\n    min-width: 1px;\n'], ['\n    color: #c00;\n    min-height: 20px;\n    min-width: 1px;\n']);
+    _templateObject2 = _taggedTemplateLiteral(['\n    color: #3F88D4;\n    font-size: 12px;\n    border-color: #3F88D4;\n    border-radius: 4px;\n    line-height: 17px;\n    padding: 0 10px;\n    background: none;\n    border-width: 1px;\n'], ['\n    color: #3F88D4;\n    font-size: 12px;\n    border-color: #3F88D4;\n    border-radius: 4px;\n    line-height: 17px;\n    padding: 0 10px;\n    background: none;\n    border-width: 1px;\n']),
+    _templateObject3 = _taggedTemplateLiteral(['\n    color: #B94B49;\n    font-size: 12px;\n    border-color: #B94B49;\n    border-radius: 4px;\n    line-height: 17px;\n    padding: 0 10px;\n    background: none;\n    border-width: 1px;\n'], ['\n    color: #B94B49;\n    font-size: 12px;\n    border-color: #B94B49;\n    border-radius: 4px;\n    line-height: 17px;\n    padding: 0 10px;\n    background: none;\n    border-width: 1px;\n']),
+    _templateObject4 = _taggedTemplateLiteral(['\n    color: #c00;\n    min-height: 20px;\n    min-width: 1px;\n'], ['\n    color: #c00;\n    min-height: 20px;\n    min-width: 1px;\n']);
 
 var _react = __webpack_require__(3);
 
@@ -19477,6 +19466,14 @@ var _styledComponents = __webpack_require__(35);
 var _styledComponents2 = _interopRequireDefault(_styledComponents);
 
 var _api = __webpack_require__(41);
+
+var _scanWord = __webpack_require__(42);
+
+var _scanWord2 = _interopRequireDefault(_scanWord);
+
+var _filterWords = __webpack_require__(43);
+
+var _filterWords2 = _interopRequireDefault(_filterWords);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19494,15 +19491,9 @@ var WordListWrapper = _styledComponents2.default.div.attrs({
 
 var AddBtn = _styledComponents2.default.button(_templateObject2);
 
-var Translation = _styledComponents2.default.div(_templateObject3);
+var MinusBtn = _styledComponents2.default.button(_templateObject3);
 
-var WordWrapper = function WordWrapper(props) {
-    return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(AppList, { items: props.items })
-    );
-};
+var Translation = _styledComponents2.default.div(_templateObject4);
 
 var WordItem = function (_React$Component) {
     _inherits(WordItem, _React$Component);
@@ -19533,8 +19524,7 @@ var WordItem = function (_React$Component) {
         key: 'addTranslation',
         value: function addTranslation(word) {
             var self = this;
-            (0, _api.add)(word).then(function (result) {
-                console.log('added word', result);
+            (0, _api.add)(word).then(function () {
                 self.setState({
                     added: true
                 });
@@ -19550,32 +19540,34 @@ var WordItem = function (_React$Component) {
                 definition = _state.definition,
                 added = _state.added;
 
-            var addBtn = added ? _react2.default.createElement(
-                'span',
-                null,
-                '(added to dictionary)'
-            ) : _react2.default.createElement(
+            var addBtn = added ? '' : _react2.default.createElement(
                 AddBtn,
                 { onClick: function onClick() {
                         return _this3.addTranslation(item);
                     } },
-                'add'
+                '+'
             );
             return _react2.default.createElement(
                 'li',
-                { title: 'hover to show translation' },
+                null,
                 _react2.default.createElement(
                     'span',
-                    { onMouseOver: function onMouseOver() {
-                            return _this3.translate(item);
-                        } },
+                    null,
+                    addBtn,
+                    _react2.default.createElement(
+                        MinusBtn,
+                        { onClick: function onClick() {
+                                return _this3.props.removeItem();
+                            } },
+                        '-'
+                    ),
                     _react2.default.createElement(
                         'b',
-                        null,
+                        { onMouseOver: function onMouseOver() {
+                                return _this3.translate(item);
+                            } },
                         item
-                    ),
-                    ' ',
-                    addBtn
+                    )
                 ),
                 _react2.default.createElement(
                     Translation,
@@ -19589,40 +19581,109 @@ var WordItem = function (_React$Component) {
     return WordItem;
 }(_react2.default.Component);
 
-var AppList = function AppList(props) {
-    var childrens = props.items.map(function (t, i) {
-        return _react2.default.createElement(WordItem, { item: t, key: i });
-    });
-    return _react2.default.createElement(
-        WordListWrapper,
-        null,
-        _react2.default.createElement(
-            'h1',
-            null,
-            'total: ',
-            props.items.length,
-            ' words'
-        ),
-        _react2.default.createElement(
-            'div',
-            null,
-            'toggle shortcut: (',
-            _react2.default.createElement(
-                'b',
-                null,
-                'ctrl+k'
-            ),
-            ')'
-        ),
-        _react2.default.createElement(
-            'ul',
-            null,
-            childrens
-        )
-    );
-};
+var AppList = function (_React$Component2) {
+    _inherits(AppList, _React$Component2);
 
-exports.default = WordWrapper;
+    function AppList() {
+        _classCallCheck(this, AppList);
+
+        var _this4 = _possibleConstructorReturn(this, (AppList.__proto__ || Object.getPrototypeOf(AppList)).call(this));
+
+        _this4.state = {
+            items: (0, _scanWord2.default)().filter(function (w) {
+                return !_filterWords2.default.includes(w.toLowerCase());
+            }),
+            searchText: ''
+        };
+        _this4.removeItem = _this4.removeItem.bind(_this4);
+        _this4.addItem = _this4.addItem.bind(_this4);
+        _this4.onSeachChange = _this4.onSeachChange.bind(_this4);
+        return _this4;
+    }
+
+    _createClass(AppList, [{
+        key: 'removeItem',
+        value: function removeItem(index) {
+            this.setState({
+                items: this.state.items.filter(function (item, i) {
+                    return i !== index;
+                })
+            });
+        }
+    }, {
+        key: 'addItem',
+        value: function addItem() {
+            var items = this.state.items;
+            items.unshift(this.state.searchText);
+            this.setState({
+                items: items
+            });
+        }
+    }, {
+        key: 'onSeachChange',
+        value: function onSeachChange(text) {
+            this.setState({ searchText: text });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this5 = this;
+
+            var items = this.state.items;
+
+            var childrens = items.map(function (t, i) {
+                return _react2.default.createElement(WordItem, { item: t, key: i, removeItem: function removeItem() {
+                        _this5.removeItem(i);
+                    } });
+            });
+            return _react2.default.createElement(
+                WordListWrapper,
+                null,
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    'total: ',
+                    items.length,
+                    ' words'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    'toggle shortcut: (',
+                    _react2.default.createElement(
+                        'b',
+                        null,
+                        'ctrl+k'
+                    ),
+                    '); hover each word to show translation'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    'Search:',
+                    _react2.default.createElement('input', { type: 'text',
+                        onChange: function onChange(e) {
+                            return _this5.onSeachChange(e.currentTarget.value);
+                        },
+                        onKeyPress: function onKeyPress(e) {
+                            if (e.key === 'Enter') {
+                                _this5.addItem();
+                            }
+                        } })
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    childrens
+                )
+            );
+        }
+    }]);
+
+    return AppList;
+}(_react2.default.Component);
+
+exports.default = AppList;
 
 /***/ }),
 /* 35 */

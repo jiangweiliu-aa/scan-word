@@ -1,11 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import $ from 'jquery'
-import WordWrapper from './app'
-import scan from './scanWord'
-import filterWords from './filterWords'
-
-const items = scan().filter(w => !filterWords.includes(w.toLowerCase()))
+import AppList from './app'
 
 $(window).keypress(function(event) {
     console.log("scan word keypress:", event, event.which)
@@ -24,6 +20,6 @@ const container = $('<div></div>')
 $('body').append(container)
 
 render(
-    <WordWrapper items={items}/>,
+    <AppList />,
     container[0]
 )
