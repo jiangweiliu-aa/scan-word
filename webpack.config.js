@@ -1,10 +1,14 @@
 const webpack = require('webpack');
+const tsImportPluginFactory = require('ts-import-plugin')
 
 module.exports = {
-	entry: __dirname + '/src/main.js',
+	entry: {
+		content: __dirname + '/src/content.js',
+		background: __dirname + '/src/background.js',
+	},
 	output: {
-		path: __dirname + '/dist',
-		filename: 'content_script.js'
+		path: __dirname + '/dist/build',
+		filename: '[name].js'
 	},
 	module: {
 		rules: [
@@ -13,15 +17,33 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: ['es2015', 'react']
+						presets: ['es2015', 'react'],
+                        plugins: [
+                            ["import", { libraryName: "antd", style: "css" }] // `style: true` for less
+                        ]
 					}
 				}
-			}
+			},
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            import: true
+                        }
+                    },
+                	{
+						loader: 'style-loader'
+					}
+				],
+            }
 		]
 	},
-    devServer: {
-        contentBase: "./dist", //本地服务器所加载的页面所在的目录
-        historyApiFallback: true, //不跳转
-        inline: true //实时刷新
-    }
+	plugins: [
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+	]
 }

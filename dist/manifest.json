@@ -5,12 +5,12 @@
   "description": "This extension is my first blood",
   "version": "1.0",
   "background": {
-    "scripts": ["background_script.js"]
+    "scripts": ["build/background.js"]
   },
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["content_script.js"]
+      "js": ["build/content.js"]
     }
   ],
   "browser_action": {
@@ -19,6 +19,8 @@
   "permissions": [
     "activeTab",
     "debugger",
+    "tabs",
+    "notifications",
     "*://*/*"
   ]
 }

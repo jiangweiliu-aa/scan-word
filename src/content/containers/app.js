@@ -1,9 +1,9 @@
 // @flow
 import React from 'react'
 import styled from 'styled-components'
-import {search, add} from './api'
-import scan from './scanWord'
-import filterWords from './filterWords'
+import {search, add} from '../ajax/api'
+import scan from '../utils/scanWord'
+import filterWords from '../utils/filterWords'
 
 const WordListWrapper = styled.div.attrs({
     className: 'word-list-wrapper invisible',
