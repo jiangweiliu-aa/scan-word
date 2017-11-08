@@ -26,18 +26,11 @@ class SearchWrapper extends React.Component {
     }
 
     onSeachChange(text) {
-        this.setState({searchText: text})
+        this.setState({searchText: text, definition: ''})
     }
 
     render() {
         const {searchText, definition} = this.state;
-        let word, translation;
-        if (searchText) {
-            word = <b>keyword: {searchText}</b>
-        }
-        if (definition) {
-            translation = <span>result: {definition}</span>
-        }
         return (
             <Modal
                 title={`search word`}
@@ -55,10 +48,10 @@ class SearchWrapper extends React.Component {
                                this.addItem()
                            }
                        }}/>
+                <br/><br/>
+                <b>{searchText}</b>
                 <br/>
-                {word}
-                <br/>
-                {translation}
+                <span>{definition}</span>
             </Modal>
         )
     }

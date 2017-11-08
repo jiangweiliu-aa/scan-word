@@ -119,7 +119,7 @@ class AppList extends React.Component {
     }
 
     onSeachChange(text) {
-        this.setState({searchText: text})
+        this.setState({searchText: text, definition: ''})
     }
 
     render() {
