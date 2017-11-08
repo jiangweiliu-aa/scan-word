@@ -1,12 +1,13 @@
 // @flow
 import React from 'react'
 import styled from 'styled-components'
-import { Modal } from 'react-bootstrap'
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css')
+import { Modal } from 'antd';
+import 'antd/lib/date-picker/style/css';
 import {search, add} from '../ajax/api'
 import scan from '../utils/scanWord'
 import filterWords from '../utils/filterWords'
-
+import { Input, Alert } from 'antd';
+import { connect } from 'react-redux'
 
 const AddBtn = styled.button`
     color: #3F88D4;
@@ -77,7 +78,7 @@ class WordItem extends React.Component {
 }
 
 class WordWrapper extends React.Component {
-    constructor() {
+    constructor(props) {
         super()
         this.state = {
             items: scan().filter(w => !filterWords.includes(w.toLowerCase())),
@@ -86,6 +87,7 @@ class WordWrapper extends React.Component {
         this.removeItem = this.removeItem.bind(this)
         this.addItem = this.addItem.bind(this)
         this.onSeachChange = this.onSeachChange.bind(this)
+        console.log('2222', props)
     }
 
     removeItem(index) {
@@ -111,23 +113,42 @@ class WordWrapper extends React.Component {
         const childrens = items.map((t, i) => (
             <WordItem item={t} key={i} removeItem={() => {this.removeItem(i)}}/>
         ))
-        return <Modal keyboard={true} autoFocus={true}>
-            <h1>total: {items.length} words</h1>
-            <div>toggle shortcut: (<b>ctrl+k</b>); hover each word to show translation</div>
-            <div>Search:
-                <input type="text"
+        return (
+            <Modal
+                title={`total: ${items.length} words`}
+                visible={this.props.visible}
+                onCancel={() => {this.props.store.dispatch({
+                    type: 'toggle_word_list'
+                })}}
+                footer={null}
+                width={'60vw'}
+            >
+                <Alert message="toggle shortcut: (<b>ctrl+k</b>); hover each word to show translation" type="info" />
+                <br/>&nbsp;
+                <Input placeholder="search word, press enter while you want to save it"
                        onChange={e => this.onSeachChange(e.currentTarget.value)}
                        onKeyPress={(e) => {
                            if (e.key === 'Enter') {
                                this.addItem()
                            }
                        }}/>
-            </div>
-            <ul>
-                {childrens}
-            </ul>
-        </Modal>
+                <ul>
+                    {childrens}
+                </ul>
+            </Modal>
+        )
     }
 }
 
-export default WordWrapper
+const mapStateToProps = (state) => ({
+    visible: state.showWordList
+})
+
+const mapDispatchToProps = () => ({
+    test: 1
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(WordWrapper)

@@ -1,49 +1,53 @@
-const webpack = require('webpack');
-const tsImportPluginFactory = require('ts-import-plugin')
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
-	entry: {
-		content: __dirname + '/src/content.js',
-		background: __dirname + '/src/background.js',
-	},
-	output: {
-		path: __dirname + '/dist/build',
-		filename: '[name].js'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['es2015', 'react'],
-                        plugins: [
-                            ["import", { libraryName: "antd", style: "css" }] // `style: true` for less
-                        ]
-					}
-				}
-			},
+    entry: {
+        content: __dirname + '/src/content.js',
+        background: __dirname + '/src/background.js',
+    },
+    output: {
+        path: __dirname + '/dist/build',
+        filename: '[name].js'
+    },
+    module: {
+        loaders: [
             {
-                test: /\.css$/,
-                use: [
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            import: true
-                        }
-                    },
-                	{
-						loader: 'style-loader'
-					}
-				],
+                test: /\.js$/,
+                include: path.join(__dirname, 'src'),
+                loaders: ['babel']
+            },
+            {
+                test: /\.eot(\?v=\d+.\d+.\d+)?$/,
+                loader: 'file'
+            },
+            {
+                test: /\.(woff|woff2)$/,
+                loader: 'file-loader?prefix=font/&limit=5000'
+            },
+            {
+                test: /\.ttf(\?v=\d+.\d+.\d+)?$/,
+                loader: 'file-loader?limit=10000&mimetype=application/octet-stream'
+            },
+            {
+                test: /\.svg(\?v=\d+.\d+.\d+)?$/,
+                loader: 'file-loader?limit=10000&mimetype=image/svg+xml'
+            },
+            {
+                test: /\.(jpe?g|png|gif)$/i,
+                loaders: ['file']
+            },
+            {
+                test: /\.ico$/,
+                loader: 'file-loader?name=[name].[ext]'
+            },
+            {
+                test: /(\.css|\.scss)$/,
+                loaders: ['style', 'css', 'postcss', 'sass']
             }
-		]
-	},
-	plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
+        ]
+    },
+    plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-	]
+    ]
 }
